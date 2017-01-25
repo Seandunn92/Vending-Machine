@@ -10,13 +10,11 @@ Code Example
 Lets say the User wants to Insert a Nickel.
 From the driver program, all the user is doing is hitting 1
 The code behind that though is this
-VendingMachine vender = new VendingMachine();   //This is our vending machine
-
-vender.insert(vender.NICKELWEIGHT, vender.NICKELSIZE); //The vending machine is passed a coin that has a Nickel's weight, and a Nickels Size, and from that can determine a nickel has been inserted
-
+VendingMachine vender = new VendingMachine();   (This is our vending machine)
+vender.insert(vender.NICKELWEIGHT, vender.NICKELSIZE); (The vending machine is passed a coin that has a Nickel's weight, and a Nickels Size,
+														 and from that can determine a nickel has been inserted)
 After we break out of the switch statement we get to this
-
-System.out.println(vender.getDisplay());     //This will let the user know their nickel has been deposited
+System.out.println(vender.getDisplay());     (This will let the user know their nickel has been deposited)
 
 
 Motivation
@@ -26,8 +24,8 @@ to program 1 of 4 sample projects.
 
 Installation
 
-Everything initially programmed was done on Eclipse which is a Java platform. To develop this program, start a project and copy "Driver.java", "VendingMachine.java", and "Driver.java" into your preferred 
-Java Programming Platform
+Everything initially programmed was done on Eclipse which is a Java platform. To develop this program, start a project and copy "Driver.java", "VendingMachine.java",
+and "Driver.java" into your preferred Java Programming Platform
 
 Tests
 
@@ -45,9 +43,10 @@ vender.setQuarters(10);
 		vender.makeChange();
 		assertEquals(2, vender.getQuarters());
 		
-Contributors
-
+Contributors 
 @Sean Dunn -seandunn92@gmail.com
+
+
 
 
 

@@ -7,13 +7,17 @@ the item is dispensed, and change is given if necessary. The user can also check
 
 Code Example
 
-Lets say the User wants to Insert a Nickel
+Lets say the User wants to Insert a Nickel.
 From the driver program, all the user is doing is hitting 1
 The code behind that though is this
-VendingMachine vender = new VendingMachine();   //This is our vending machine
-vender.insert(vender.NICKELWEIGHT, vender.NICKELSIZE); //The vending machine is passed a coin that has a Nickel's weight, and a Nickels Size, and from that can determine a nickel has been inserted
+VendingMachine vender = new VendingMachine();   (This is our vending machine)
+
+vender.insert(vender.NICKELWEIGHT, vender.NICKELSIZE); (The vending machine is passed a coin that has a Nickel's weight, and a Nickels Size, 
+														and from that can determine a nickel has been inserted)
+
 After we break out of the switch statement we get to this
-System.out.println(vender.getDisplay());     //This will let the user know their nickel has been deposited
+
+System.out.println(vender.getDisplay());     (This will let the user know their nickel has been deposited)
 
 
 Motivation
@@ -23,17 +27,19 @@ to program 1 of 4 sample projects.
 
 Installation
 
-Everything initially programmed was done on Eclipse which is a Java platform. To develop this program, start a project and copy "Driver.java", "VendingMachine.java", and "Driver.java" into your preferred 
-Java Programming Platform
+Everything initially programmed was done on Eclipse which is a Java platform. To develop this program, start a project and copy "Driver.java", "VendingMachine.java", 
+and "Driver.java" into your preferred Java Programming Platform
 
 Tests
 
 VendingMachineTest.Java has all the Tests written for this project. You can go there to either edit Tests and see if they work as desired, or write new ones to Test yourself
 For Instance here is a snippet from VerifyMakeChange()
+
 vender.setQuarters(10);
 		vender.setTotal(100);
 		vender.makeChange();
 		assertEquals(6, vender.getQuarters());
+		
 If we change vender.setTotal(100); to vender.setTotal(200) we would expect 2 quarters to be left after $2.00 of quarters are given to customer, so it should look like this
 vender.setQuarters(10);
 		vender.setTotal(200);
