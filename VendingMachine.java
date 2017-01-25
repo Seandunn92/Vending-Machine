@@ -28,7 +28,10 @@ public class VendingMachine {
 	private int Quarters;
 	private int Dimes;
 	private int Nickels;
-	
+	private String Display;
+	//Default Message, changed if exact change is needed
+	private String Message = "INSERT COIN";
+	public String getMessage() {return Message;}
 	public void setTotal(double total) {this.total=total;}
 	public double getTotal() {return total;}
 	public void setQuarters(int Quarters){this.Quarters=Quarters;}
@@ -37,6 +40,14 @@ public class VendingMachine {
 	public int getDimes(){return Dimes;}
 	public void setNickels(int Nickels){this.Nickels=Nickels;}
 	public int getNickels(){return Nickels;}
+	public String getDisplay(){return Display;}
+	
+	public void updateMessage(){
+		if (Nickels >= 4 || (Nickels>=3 && Dimes>=1) || (Nickels>=1 && Dimes >=2))
+			Message = "INSERT COIN";
+		else 
+			Message = "EXACT CHANGE ONLY";
+	}
 	
 	//A method to convert given weight to corresponding Value
 		//if the method has a corresponding coinvalue will also increase the number of that coin in the machine
@@ -66,6 +77,7 @@ public class VendingMachine {
 		Quarters=10;
 		Nickels=10;
 		Dimes=10;
+		Display= Message;
 
 	}
 
@@ -77,18 +89,24 @@ public class VendingMachine {
 		Quarters=10; 
 		Dimes=10;
 		Nickels=10;
+		Display=Message;
 	}
 
 
-	public double insert(double CoinWeight, double CoinSize) {
+	public void insert(double CoinWeight, double CoinSize) {
 		// TODO Auto-generated method stub
 		total+= convertWeightandSize(CoinWeight, CoinSize);
+		if (total!=0)
+			Display="$" + total;
+		else Display = Message;
 
-		return total;
+		
 	}
 
+	//This method is for the customer to make change without a purchase
+	
 	//This function makes change from the remaining total either by Customer request or by Transaction
-	public double makeChange(double total){
+	public void makeChange(){
 		//start taking away as many Quarters as possible
 		while (total/0.25>=1){
 			if (Quarters<=0)
@@ -108,44 +126,77 @@ public class VendingMachine {
 			Nickels--;
 			total-=0.05;
 		}
-		
-		return total;
+		//It's important before returning new total in machine, to update whether or not vending machine can make change, (Message is either EXACT CHANGE ONLY or INSERT COIN)
+		updateMessage();
+		if (total==0)
+			Display=Message;
+		else
+			Display="$ " + total;
+	
 		
 	}
 	
-	public String purchase(String ITEMCHOICE) {
-		// TODO Auto-generated method stub
+	
+	
+	public void purchase(String ITEMCHOICE) {
+		
 		if (ITEMCHOICE == "Chips"){
+			if (Chips<=0){
+				
+				Display="SOLD OUT";
+				return ;
+			}
 			if (total>=CHIPSCOST){
 				Chips--;
-				makeChange(total-CHIPSCOST);
-				return "THANK YOU";
+				total-=CHIPSCOST;
+				makeChange();
+				Display = "THANK YOU";
+				return ;
 			}
-			//trick from onlineto make 2 decimal places
-			return "Price " + String.format("%.2f", CHIPSCOST);
+			//trick from online to make 2 decimal places
+			Display = "Price " + String.format("%.2f", CHIPSCOST);
+			return ;
 		}
 		if (ITEMCHOICE == "Candy"){
+			if (Candy<=0){
+				Display ="SOLD OUT";
+				return;
+			}
 			if (total>=CANDYCOST){
 				Candy--;
-				makeChange(total-CANDYCOST);
-				return "THANK YOU";
+				total-=CANDYCOST;
+				makeChange();
+				
+				Display = "THANK YOU";
+				return;
 			}
-			return "Price " + String.format("%.2f", CANDYCOST);
+			Display = "Price " + String.format("%.2f", CANDYCOST);
+			return;
 		}
 		
 		if (ITEMCHOICE == "Soda"){
+			if (Sodas<=0){
+				Display = "SOLD OUT";
+				return;
+				
+			}
 			if (total>=SODACOST){
 				
 				Sodas--;
-				makeChange(total-SODACOST);
-				return "THANK YOU";
+				total-= SODACOST;
+				makeChange();
+				Display="THANK YOU";
+				return;
 			}
-			return "Price " + String.format("%.2f", SODACOST);
+			Display = "Price " + String.format("%.2f", SODACOST);
+			return;
 		}
-		
-		return null;
+		//edge case we should never get to from an invalid choice of product
+		Display="Invalid Choice";
+	
 
 	}
+	
 
 	
 
