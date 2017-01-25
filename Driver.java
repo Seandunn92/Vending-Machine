@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+
 public class Driver {
 
 
@@ -15,8 +16,9 @@ public class Driver {
 		System.out.println("5: Purhcase Candy");
 		System.out.println("6: Purchase Soda");
 		System.out.println("7: Return Coins");
+		System.out.println("8: Check Display");
 		System.out.println("0: Quit");
-
+	
 		System.out.println();
 		System.out.println(vender.getDisplay());
 
@@ -32,10 +34,11 @@ public class Driver {
 			case 5: vender.purchase("Candy"); break;
 			case 6: vender.purchase("Soda"); break;
 			case 7: vender.makeChange(); break;
+			case 8: vender.checkDisplay();
 			}
 
 			System.out.println(vender.getDisplay());
-			System.out.println(vender.getTotal());
+			
 
 		}while (input!=0);
 
