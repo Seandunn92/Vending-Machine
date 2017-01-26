@@ -27,8 +27,8 @@ to program 1 of 4 sample projects.
 
 Installation
 
-Everything initially programmed was done on Eclipse which is a Java platform. To develop this program, start a project and copy "Driver.java", "VendingMachine.java", 
-and "Driver.java" into your preferred Java Programming Platform
+Everything initially programmed was done on Eclipse which is a Java platform. To develop this program, start a  Java project and copy "Driver.java", "VendingMachine.java", 
+and "Driver.java" into your source folder
 
 Tests
 
