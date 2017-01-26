@@ -11,35 +11,35 @@ public class VendingMachineTest {
 	@Test
 	public void whenEmptyVendingMachineIsPassedAQuarterItReturnsAQuarter() {
 		VendingMachine vender = new VendingMachine();
-		vender.insert(vender.QUARTERWEIGHT, vender.QUARTERSIZE);
+		vender.insert(VendingMachine.QUARTERWEIGHT, VendingMachine.QUARTERSIZE);
 		assertEquals(25,vender.getTotal() );
 	}
 	//verifies an empty machine will have a total of 5, when a Nickel is Put in
 	@Test
 	public void whenEmptyVendingMachineIsPassedANickelItReturnsANickel(){
 		VendingMachine vender = new VendingMachine();
-		vender.insert(vender.NICKELWEIGHT, vender.NICKELSIZE);
+		vender.insert(VendingMachine.NICKELWEIGHT, VendingMachine.NICKELSIZE);
 		assertEquals(5,vender.getTotal());
 	}
 	//verifies when an empty machine is passed a dime, it will have a total of 10
 	public void whenEmptyVendingMachineIsPassedADimeItReturnsADime(){
 		VendingMachine vender = new VendingMachine();
-		vender.insert(vender.DIMEWEIGHT, vender.DIMESIZE);
+		vender.insert(VendingMachine.DIMEWEIGHT, VendingMachine.DIMESIZE);
 		assertEquals(10, vender.getTotal());
 	}
 	@Test
-	//Verifies when we put money in a machine that already has money it will correctly adjust the total
+	//Verifies when user puts money in a machine that already has money, the machine will correctly adjust the total
 	public void whenVendingMachineWithAMoneyIsGivenMoreMoenyItsTotalUpdatesCorrecty(){
 		//initialize to start with a dollar in the machine
 		VendingMachine vender = new VendingMachine(100, 10, 10, 10);
 		//Add a Quarter and Expect 125($1.25) is in the machine
-		vender.insert(vender.QUARTERWEIGHT, vender.QUARTERSIZE);
+		vender.insert(VendingMachine.QUARTERWEIGHT, VendingMachine.QUARTERSIZE);
 		assertEquals(125, vender.getTotal() );
 		//Add a dime to our 125, and we expect 135
-		vender.insert(vender.DIMEWEIGHT, vender.DIMESIZE);
+		vender.insert(VendingMachine.DIMEWEIGHT, VendingMachine.DIMESIZE);
 		assertEquals(135, vender.getTotal());
 		//Add a nickel to our 135 and we expect 140
-		vender.insert(vender.NICKELWEIGHT, vender.NICKELSIZE);
+		vender.insert(VendingMachine.NICKELWEIGHT, VendingMachine.NICKELSIZE);
 		assertEquals(140, vender.getTotal());
 	}
 	
@@ -96,22 +96,31 @@ public class VendingMachineTest {
 		vender.purchase("Soda");
 		assertEquals("Price $1.00", vender.getDisplay());
 	}
-	/* This test does not account for the edge case where the customer inserted money without verifying the machine had change
+	
+	//This test makes sure the vending machine is emptied out after each purchase, meaning it made Change for the customrer
+	// This test does not account for the edge case where the customer inserted money without verifying the machine had change
 	@Test
 	public void VerifyEmptyVendingMachinewhenPurchaseMade(){
-		VendingMachine vender = new VendingMachine(2.00, 10, 10, 10);
+		
+		//Chips are purchsed, Vending Machine Total should be 0 when finished
+		VendingMachine vender = new VendingMachine();
+		vender.setTotal(200);
 		vender.purchase("Chips");
-		assertEquals(0.00, vender.getTotal(), 0.01);
-		vender.setTotal(2.00);
+		assertEquals(0, vender.getTotal());
 		
+		//Candy is purhcased, Vending Machine Total should be 0 when finished
+		vender = new VendingMachine();
+		vender.setTotal(200);
 		vender.purchase("Candy");
-		assertEquals(0.00, vender.getTotal(), 0.01);
-		vender.setTotal(2.00);
+		assertEquals(0, vender.getTotal());
 		
+		//Soda is purchased, Vending Machine Total should be 0 when finished
+		vender = new VendingMachine();
+		vender.setTotal(200);
 		vender.purchase("Soda");
-		assertEquals(0.00, vender.getTotal(), 0.01);
+		assertEquals(0, vender.getTotal());
 	} 
-	*/
+	
 	
 	@Test
 	//This method verifies that MakeChange is working correctly, and not giving away more change then we have
@@ -179,8 +188,8 @@ public class VendingMachineTest {
 		vender.setDimes(0);
 		vender.setNickels(0);
 		vender.setQuarters(0);
-		vender.updateMessage();
-		assertEquals("EXACT CHANGE ONLY", vender.getMessage());
+		vender.updateInsertOrExact();
+		assertEquals("EXACT CHANGE ONLY", vender.getInsertOrExact());
 		
 	}
 	
@@ -188,20 +197,50 @@ public class VendingMachineTest {
 	//made a test for adding 3 nickels because software wasn't running correctly when 3 were inserted
 	public void TestFor3Nickels(){
 		VendingMachine vender = new VendingMachine();
-		vender.insert(vender.NICKELWEIGHT, vender.NICKELSIZE);
-		vender.insert(vender.NICKELWEIGHT, vender.NICKELSIZE);
-		vender.insert(vender.NICKELWEIGHT, vender.NICKELSIZE);
+		vender.insert(VendingMachine.NICKELWEIGHT, VendingMachine.NICKELSIZE);
+		vender.insert(VendingMachine.NICKELWEIGHT, VendingMachine.NICKELSIZE);
+		vender.insert(VendingMachine.NICKELWEIGHT, VendingMachine.NICKELSIZE);
 		assertEquals(15, vender.getTotal(), 0);
 	}
 	@Test
-	//Test that Check Display is properly displaying the customers money, or the approriate message if no money is in the machine
+	//Test that Check Display is properly displaying the customers money, or the appropriate message if no money is in the machine
 	public void TestCheckDisplay(){
 		VendingMachine vender = new VendingMachine();
 		vender.checkDisplay();
-		assertEquals(vender.getMessage(), vender.getDisplay());
-		vender.insert(vender.NICKELWEIGHT, vender.NICKELSIZE);
+		assertEquals(vender.getInsertOrExact(), vender.getDisplay());
+		vender.insert(VendingMachine.NICKELWEIGHT, VendingMachine.NICKELSIZE);
 		vender.checkDisplay();
 		assertEquals("$0.05", vender.getDisplay());
+	}
+	@Test
+	public void TestMarginOfError(){
+		double ourWeight = VendingMachine.NICKELWEIGHT -.08;
+		VendingMachine vender= new VendingMachine();
+		assertTrue(vender.WithinMarginOfError(VendingMachine.NICKELWEIGHT, ourWeight));
+		ourWeight = VendingMachine.NICKELWEIGHT + .08;
+		assertTrue(vender.WithinMarginOfError(VendingMachine.NICKELWEIGHT, ourWeight));
+	}
+	@Test
+	public void TestMarginOfErrorWhenInsertingCoins(){
+		
+		//Add a nickel within margin of Error, Should have 5 cents in machine
+		double ourWeight = VendingMachine.NICKELWEIGHT -.08;
+		double ourSize = VendingMachine.NICKELSIZE + .08;
+		VendingMachine vender = new VendingMachine();
+		vender.insert(ourWeight, ourSize);
+		assertEquals(5, vender.getTotal());
+	
+		//Add a dime within margin of Error, Should have 15 cents including previous nickel
+		ourWeight = VendingMachine.DIMEWEIGHT + .08;
+		ourSize = VendingMachine.DIMESIZE - .08;
+		vender.insert(ourWeight, ourSize);
+		assertEquals(15, vender.getTotal());
+		
+		//Add a Quarter with Margin of Error, Should have 40 cents, including previous Nickel and Dime
+		ourWeight = VendingMachine.QUARTERWEIGHT -.08;
+		ourSize = VendingMachine.QUARTERSIZE + .08;
+		vender.insert(ourWeight, ourSize);
+		assertEquals(40, vender.getTotal());
 	}
 	
 }
